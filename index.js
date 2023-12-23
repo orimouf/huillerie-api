@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv')
 const authRoute = require("./routes/auth")
 const userRoute = require("./routes/users")
-const regionRoute = require("./routes/regions")
+const uniqueIdRoute = require("./routes/uniqueId")
 const productRoute = require("./routes/products")
 const orderRoute = require("./routes/orders")
 const orderedProductRoute = require("./routes/orderedProducts")
@@ -31,13 +31,13 @@ app.use(express.json())
 
 app.use("/api/auth", authRoute)
 app.use("/api/users", userRoute)
-app.use("/api/regions", regionRoute)
+app.use("/api/uniqueIds", uniqueIdRoute)
 app.use("/api/clients", clientRoute)
 app.use("/api/products", productRoute)
 app.use("/api/payments", paymentData)
 app.use("/api/orders", orderRoute)
 app.use("/api/allproducts", orderedProductRoute)
-app.use("/api/appdata", appData)
+app.use("/api/appData", appData)
 
 
 app.listen(8800, () => {

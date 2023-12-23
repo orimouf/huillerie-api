@@ -1,7 +1,7 @@
 const router = require("express").Router()
 const User = require("../models/User")
 const Client = require("../models/Client")
-const Region = require("../models/Region")
+const UniqueId = require("../models/UniqueId")
 const Product = require("../models/Product")
 const Order = require("../models/Order")
 const OrderedProduct = require("../models/OrderedProduct")
@@ -32,7 +32,7 @@ router.post("/dataclients", async (req, res) => {
                             appId: Element.id,
                             clientName: Element.client_name,
                             phone: Element.phone,
-                            region: Element.region,
+                            UniqueId: Element.UniqueId,
                             prices: Element.prices,
                             oldCredit: Element.old_credit,
                             isCredit: is_credit,
@@ -56,7 +56,7 @@ router.post("/dataclients", async (req, res) => {
                 appId: Element.id,
                 clientName: Element.client_name,
                 phone: Element.phone,
-                region: Element.region,
+                UniqueId: Element.UniqueId,
                 prices: Element.prices,
                 oldCredit: Element.old_credit,
                 isCredit: is_credit,
@@ -170,8 +170,8 @@ router.post("/datausers", async (req, res) => {
     
 })
 
-//SET DATA REGIONS
-router.post("/dataregions", async (req, res) => {
+//SET DATA UniqueIdS
+router.post("/dataUniqueIds", async (req, res) => {
 
     const dataFromApp = req.body.data
     var reutrnStatus
@@ -179,18 +179,18 @@ router.post("/dataregions", async (req, res) => {
  
     async function insertData(Element) {
         var status = ""
-        Element.server_id == "" ? idCheck = null : idCheck = await Region.findById(Element.server_id)
+        Element.server_id == "" ? idCheck = null : idCheck = await UniqueId.findById(Element.server_id)
        
         if (idCheck != null) {
             status = "done"
         } else {
-            const newRegion = new Region ({
+            const newUniqueId = new UniqueId ({
                 appId: Element.id,
-                regionName: Element.region_name
+                UniqueIdName: Element.UniqueId_name
             })
     
             try{
-                const region = await newRegion.save()
+                const UniqueId = await newUniqueId.save()
                 status = "done"           
             } catch (err) {
                 status = err
@@ -207,7 +207,7 @@ router.post("/dataregions", async (req, res) => {
     if (reutrnStatus == "done") {
         res.status(201).json({
             status: 1,
-            message: "Regions data save Successful",
+            message: "UniqueIds data save Successful",
         })
     } else {
         res.status(500).json(reutrnStatus)
@@ -460,7 +460,7 @@ router.post("/datapayments", async (req, res) => {
                 appId: Element.id,
                 clientName: Element.client_name,
                 clientId: Element.client_id,
-                region: Element.region,
+                UniqueId: Element.UniqueId,
                 oldSomme: Element.old_somme,
                 verssi: Element.verssi,
                 rest: Element.rest,
