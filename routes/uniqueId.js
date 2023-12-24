@@ -82,7 +82,7 @@ router.get("/last/", async (req, res) => {
             const UniqueIds = query ? await UniqueId.find().sort({_id: -1}).limit(10) : await UniqueId.find()
             let lastOne = (UniqueIds.length > 0) ? UniqueIds[UniqueIds.length - 1] : "Data Empty"
 
-            res.status(200).json( {lastOne} )
+            res.status(200).json( lastOne.UniqueId )
         } catch (err) {
             res.status(500).json(err)
         }
