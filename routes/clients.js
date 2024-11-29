@@ -5,8 +5,8 @@ const verify = require("../verifyToken")
 
 // CREATE
 
-router.post("/", verify, async (req, res) => {
-    if(req.user.isAdmin) {
+router.post("/", async (req, res) => {
+    // if(req.user.isAdmin) {
         const newClient = new Order(req.body)
 
         try {
@@ -15,9 +15,9 @@ router.post("/", verify, async (req, res) => {
         } catch (err) {
             res.status(500).json(err)
         }
-    } else {
-        res.status(500).json("you are not allowed!")
-    }
+    // } else {
+    //     res.status(500).json("you are not allowed!")
+    // }
 })
 
 //UPDATE
