@@ -81,10 +81,9 @@ router.get("/find/:id", async (req, res) => {
 //GET ALL
 
 router.get("/", async (req, res) => {
-    const query = req.query.new
     // if(req.user.isAdmin) {
         try {
-            const clients = query ? await Client.find().sort({_id: -1}).limit(10) : await Client.find()
+            const clients = Client.find()
             res.status(200).json({ clients })
         } catch (err) {
             res.status(500).json(err)
