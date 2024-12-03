@@ -15,6 +15,8 @@ router.post("/", async (req, res) => {
             const savedClient = await newClient.save()
             res.status(200).json(savedClient)
         } catch (err) {
+            console.log(err);
+            
             res.status(500).json(err)
         }
     // } else {
