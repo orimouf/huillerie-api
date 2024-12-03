@@ -8,15 +8,11 @@ const verify = require("../verifyToken")
 router.post("/", async (req, res) => {
     // if(req.user.isAdmin) {
         const newClient = new Client(req.body)
-        console.log(req.body);
-        
 
         try {
             const savedClient = await newClient.save()
             res.status(200).json(savedClient)
         } catch (err) {
-            console.log(err);
-            
             res.status(500).json(err)
         }
     // } else {
