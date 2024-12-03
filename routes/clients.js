@@ -7,7 +7,7 @@ const verify = require("../verifyToken")
 
 router.post("/", async (req, res) => {
     // if(req.user.isAdmin) {
-        const newClient = new Order(req.body)
+        const newClient = new Client(req.body)
 
         try {
             const savedClient = await newClient.save()
