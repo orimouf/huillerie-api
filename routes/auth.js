@@ -73,7 +73,7 @@ router.post("/login", async (req, res) => {
         const userData = {...info, accessToken}
         console.log(userData);
         
-        res.status(200).json(userData)
+        res.status(200).json({message: "Successfully Registered", status: 201, data: userData})
         // res.status(200).json({
         //     status: 1,
         //     message: "Login Successful",
