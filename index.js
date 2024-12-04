@@ -22,7 +22,7 @@ dotenv.config();
 //     .then(() => console.log("DB connection Successfull!"))
 //     .catch((err) => console.log(err));
 // }
-
+mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URL)
 .then(() => console.log("DB connection Successfull!"))
     .catch((err) => console.log(err));
