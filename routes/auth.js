@@ -55,6 +55,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     try{
         const user = await User.findOne({ email: req.body.email})
+        
         !user && res.status(401).json("Wrong password or username!")
 
         const bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY )
@@ -70,17 +71,8 @@ router.post("/login", async (req, res) => {
         )
 
         const { password, ...info } = user._doc
-        const userData = {...info, accessToken}
-        console.log(userData);
-        
-        res.status(401).json({message: "Successfully Registered", status: 401, data: userData})
-        // res.status(200).json({
-        //     status: 1,
-        //     message: "Login Successful",
-        //     data: {
-        //         ...info, accessToken
-        //     }
-        // })
+
+        res.status(200).json({...info, accessToken})
     } catch(err) {
         res.status(500).json(err)
     }
