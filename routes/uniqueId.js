@@ -11,7 +11,6 @@ router.put("/", async (req, res) => {
             const updatedUniqueId = await UniqueId.findOneAndUpdate({idName: "clientAutoval"}, 
                 {
                     "$inc": {"uniqueId": 1}
-                    // $set:req.body,
                 },
                 { new: true }
             )
