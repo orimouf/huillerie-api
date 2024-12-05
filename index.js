@@ -11,7 +11,12 @@ const orderedProductRoute = require("./routes/orderedProducts")
 const appData = require("./routes/appdata")
 const paymentData = require("./routes/payments")
 const clientRoute = require("./routes/clients")
-
+const cors=require("cors");
+const corsOptions ={
+   origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
 
 dotenv.config();
 
@@ -28,6 +33,7 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((err) => console.log(err));
 
 app.use(express.json())
+app.use(cors(corsOptions)) 
 
 app.use("/api/auth", authRoute)
 app.use("/api/users", userRoute)
