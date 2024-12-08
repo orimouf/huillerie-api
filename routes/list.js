@@ -1,5 +1,4 @@
 const router = require("express").Router()
-const Client = require("../models/Client")
 const List = require("../models/List")
 const CryptoJS = require("crypto-js")
 const verify = require("../verifyToken")
@@ -8,22 +7,25 @@ const verify = require("../verifyToken")
 
 router.post("/", async (req, res) => {
     // if(req.user.isAdmin) {
-        const newClient = new Client(req.body)
+        const newList = new List(req.body)
 
-        const dateCheck = await Client.find({
-            "entryTime" : { "$in": [req.body.entryTime] },
-            "entryDate" : { "$in": [req.body.entryDate] }
-        })
+        const checkList = await List.findOne({ date: req.body.date})
         
-        if (dateCheck.status !== "Passe") { 
-            res.status(401).json("هذا التوقيت محجوز يرجى تغييره")        
+        if(checkList) {
+            const updatedList = await List.findByIdAndUpdate(checkList.id, 
+                {
+                    $set:req.body,
+                },
+                { new: true }
+            )
+            res.status(200).json(updatedList)
         } else {
             try {
-                const savedClient = await newClient.save()
-                res.status(200).json(savedClient)
+                const savedList = await newList.save()
+                res.status(200).json(savedList)
             } catch (err) {
                 res.status(500).json(err)
-            }
+            }  
         }
     // } else {
     //     res.status(500).json("you are not allowed!")
@@ -41,13 +43,13 @@ router.put("/:id", verify, async (req, res) => {
                 ).toString()
         }
         try {
-            const updatedClient = await Client.findByIdAndUpdate(req.params.id, 
+            const updatedList = await List.findByIdAndUpdate(req.params.id, 
                 {
                     $set:req.body,
                 },
                 { new: true }
             )
-            res.status(200).json(updatedClient)
+            res.status(200).json(updatedList)
         } catch (err) {
             res.status(500).json(err)
         }
@@ -61,8 +63,8 @@ router.put("/:id", verify, async (req, res) => {
 router.delete("/:id", verify, async (req, res) => {
     if(req.user.id === req.params.id || req.user.isAdmin) {
         try {
-            await Client.findByIdAndDelete(req.params.id)
-            res.status(200).json("Client has been deleted...")
+            await List.findByIdAndDelete(req.params.id)
+            res.status(200).json("List has been deleted...")
         } catch (err) {
             res.status(500).json(err)
         }
@@ -73,12 +75,10 @@ router.delete("/:id", verify, async (req, res) => {
 
 //GET
 
-router.get("/find/:id", async (req, res) => {
+router.get("/find/:date", async (req, res) => {
     try {
-        const client = await Client.findByIdAndDelete(req.params.id)
-        const { password, ...info } = client._doc
-
-        res.status(200).json(info)
+        const list = await List.findOne({ date: req.params.date })
+        res.status(200).json(list)
     } catch (err) {
         res.status(500).json(err)
     }
@@ -89,13 +89,13 @@ router.get("/find/:id", async (req, res) => {
 router.get("/", async (req, res) => {
     // if(req.user.isAdmin) {
         try {
-            const clients = await Client.find()
-            res.status(200).json({ clients })
+            const lists = await List.find()
+            res.status(200).json({ lists })
         } catch (err) {
             res.status(500).json(err)
         }
     // } else {
-    //     res.status(500).json("you are not allowed to see all clients!")
+    //     res.status(500).json("you are not allowed to see all lists!")
     // }
 })
 
@@ -120,7 +120,7 @@ router.get("/stats", async (req, res) => {
     ]
 
     try {
-        const data = await Client.aggregate([
+        const data = await List.aggregate([
             {
                 $project:{
                     month: {$month: "$createdAt"} // or $year
