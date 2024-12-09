@@ -10,21 +10,21 @@ router.post("/", async (req, res) => {
     // if(req.user.isAdmin) {
         const newClient = new Client(req.body)
 
-        const dateCheck = await Client.find({
-            "entryTime" : { "$in": [req.body.entryTime] },
-            "entryDate" : { "$in": [req.body.entryDate] }
-        })
+        // const dateCheck = await Client.find({
+        //     "entryTime" : { "$in": [req.body.entryTime] },
+        //     "entryDate" : { "$in": [req.body.entryDate] }
+        // })
         
-        if (dateCheck.status !== "Passe") { 
-            res.status(401).json("هذا التوقيت محجوز يرجى تغييره")        
-        } else {
+        // if (dateCheck.status !== "Passe") { 
+        //     res.status(401).json("هذا التوقيت محجوز يرجى تغييره")        
+        // } else {
             try {
                 const savedClient = await newClient.save()
                 res.status(200).json(savedClient)
             } catch (err) {
                 res.status(500).json(err)
             }
-        }
+        // }
     // } else {
     //     res.status(500).json("you are not allowed!")
     // }
