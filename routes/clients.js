@@ -58,7 +58,7 @@ router.put("/:id", verify, async (req, res) => {
 
 //DELETE
 
-router.delete("/:id", verify, async (req, res) => {
+router.delete("/:id", async (req, res) => {
     // if(req.user.id === req.params.id || req.user.isAdmin) {
         try {
             await Client.findByIdAndDelete(req.params.id)
