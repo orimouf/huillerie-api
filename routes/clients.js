@@ -59,16 +59,16 @@ router.put("/:id", verify, async (req, res) => {
 //DELETE
 
 router.delete("/:id", verify, async (req, res) => {
-    if(req.user.id === req.params.id || req.user.isAdmin) {
+    // if(req.user.id === req.params.id || req.user.isAdmin) {
         try {
             await Client.findByIdAndDelete(req.params.id)
             res.status(200).json("Client has been deleted...")
         } catch (err) {
             res.status(500).json(err)
         }
-    } else {
-        res.status(500).json("you can delete only your account!")
-    }
+    // } else {
+    //     res.status(500).json("you can delete only your account!")
+    // }
 })
 
 //GET
